@@ -1,14 +1,15 @@
 """
-RAG Engine for Zymnix AI Consultant chatbot.
-Handles document ingestion, embedding, retrieval, and response generation.
+Lightweight RAG Engine for Zymnix AI Consultant.
+Uses JSON storage and Cosine Similarity to stay within Vercel's 250MB limit.
 """
 
 import os
+import json
+import numpy as np
 from typing import List, Dict, Any
 from dotenv import load_dotenv
-import chromadb
-from chromadb.config import Settings
 from groq import Groq
+
 try:
     from .prompts import SYSTEM_PROMPT, format_prompt, GREETING_MESSAGE
 except (ImportError, ValueError):
@@ -16,197 +17,132 @@ except (ImportError, ValueError):
 
 load_dotenv()
 
-
 class ZymnixRAG:
-    """RAG system for Zymnix AI Consultant."""
+    """Lightweight RAG system for Zymnix AI Consultant."""
     
     def __init__(self):
         """Initialize RAG components."""
-        # Environment config
         self.groq_api_key = os.getenv("GROQ_API_KEY")
         self.model_name = os.getenv("MODEL_NAME", "llama-3.1-8b-instant")
-        self.vector_db_path = os.getenv("VECTOR_DB_PATH", "./chroma_db")
+        self.kb_path = os.getenv("KNOWLEDGE_BASE_PATH", "./data/knowledge_base.json")
         
-        # Groq client
-        self.groq_client = Groq(api_key=self.groq_api_key)
-        
-        # Robust absolute path for serverless/read-only compatibility
-        if not os.path.isabs(self.vector_db_path):
+        # Absolute path for reliability
+        if not os.path.isabs(self.kb_path):
             base_dir = os.path.dirname(os.path.abspath(__file__))
-            self.vector_db_path = os.path.normpath(os.path.join(base_dir, self.vector_db_path))
+            self.kb_path = os.path.normpath(os.path.join(base_dir, self.kb_path))
             
-        print(f"Initializing vector database at {self.vector_db_path}...")
-        self.chroma_client = chromadb.PersistentClient(path=self.vector_db_path)
+        self.groq_client = Groq(api_key=self.groq_api_key)
+        self.knowledge_base = self._load_kb()
         
-        # Get or create collection (using Groq for embeddings)
-        self.collection = self.chroma_client.get_or_create_collection(
-            name="zymnix_knowledge",
-            metadata={"description": "Zymnix business knowledge base"}
-        )
-        
-        print(f"✅ RAG Engine initialized. Collection has {self.collection.count()} documents.")
-    
+        print(f"✅ Lightweight RAG Engine initialized. KB size: {len(self.knowledge_base)} chunks.")
+
+    def _load_kb(self) -> List[Dict]:
+        """Load knowledge base from JSON."""
+        if os.path.exists(self.kb_path):
+            with open(self.kb_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return []
+
+    def _save_kb(self):
+        """Save knowledge base to JSON."""
+        os.makedirs(os.path.dirname(self.kb_path), exist_ok=True)
+        with open(self.kb_path, 'w', encoding='utf-8') as f:
+            json.dump(self.knowledge_base, f, indent=2)
+
     def _get_embedding(self, text: str) -> List[float]:
-        """
-        Get embedding using simple hash-based approach for demo.
-        For production, use proper embedding model.
-        """
-        # Simple hash-based embedding for demo purposes
-        # In production, use OpenAI embeddings or sentence-transformers
+        """Deterministic hash-based embedding (384-dim)."""
         import hashlib
         import struct
         
-        # Create a deterministic embedding from text
         hash_obj = hashlib.sha256(text.encode())
         hash_bytes = hash_obj.digest()
         
-        # Convert to 384-dimensional vector
         embedding = []
         for i in range(0, 384):
             idx = i % len(hash_bytes)
-            embedding.append(struct.unpack('f', struct.pack('I', hash_bytes[idx] * (i + 1) % 256))[0])
+            # Match the original hash logic for consistency
+            val = struct.unpack('f', struct.pack('I', hash_bytes[idx] * (i + 1) % 256))[0]
+            embedding.append(val)
         
         # Normalize
-        norm = sum(x**2 for x in embedding) ** 0.5
-        embedding = [x / (norm + 1e-9) for x in embedding]
-        
-        return embedding
-    
+        norm = np.linalg.norm(embedding)
+        return (np.array(embedding) / (norm + 1e-9)).tolist()
+
     def ingest_data(self, file_path: str):
-        """
-        Ingest and chunk data from the training file.
-        
-        Args:
-            file_path: Path to the zymnix_rag_expanded.txt file
-        """
-        print(f"Reading data from {file_path}...")
-        
+        """Ingest text data and save to JSON knowledge base."""
+        print(f"Ingesting data from {file_path}...")
         with open(file_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
-        # Split by chunk markers
+            
         chunks = []
         chunk_parts = content.split('### 🧩 CHUNK')
         
-        for i, part in enumerate(chunk_parts[1:], 1):  # Skip intro text
-            # Extract chunk number and content
+        for i, part in enumerate(chunk_parts[1:], 1):
             lines = part.strip().split('\n', 1)
             if len(lines) >= 2:
-                chunk_header = lines[0].strip()
-                chunk_content = lines[1].strip()
+                header = lines[0].strip()
+                text = lines[1].strip().replace('---', '').strip()
+                full_text = f"{header}\n{text}"
                 
-                # Clean up chunk content
-                chunk_content = chunk_content.replace('---', '').strip()
-                
-                chunk = {
-                    'id': f'chunk_{i:02d}',
-                    'header': chunk_header,
-                    'content': chunk_content,
-                    'metadata': {'chunk_number': i}
-                }
-                chunks.append(chunk)
+                chunks.append({
+                    "id": f"chunk_{i:02d}",
+                    "header": header,
+                    "content": text,
+                    "embedding": self._get_embedding(full_text)
+                })
         
-        print(f"Found {len(chunks)} chunks. Generating embeddings...")
-        
-        # Generate embeddings
-        texts = [f"{chunk['header']}\n{chunk['content']}" for chunk in chunks]
-        embeddings = [self._get_embedding(text) for text in texts]
-        
-        # Store in ChromaDB
-        self.collection.add(
-            ids=[chunk['id'] for chunk in chunks],
-            embeddings=embeddings,
-            documents=texts,
-            metadatas=[{'chunk_number': chunk['metadata']['chunk_number'], 
-                       'header': chunk['header']} for chunk in chunks]
-        )
-        
-        print(f"✅ Ingested {len(chunks)} chunks into vector database.")
-    
+        self.knowledge_base = chunks
+        self._save_kb()
+        print(f"✅ Successfully ingested {len(chunks)} chunks.")
+
     def retrieve_context(self, query: str, top_k: int = 3) -> str:
-        """
-        Retrieve relevant context for a query.
+        """Find most similar chunks using dot product (normalized vectors)."""
+        if not self.knowledge_base:
+            return ""
+            
+        query_vec = np.array(self._get_embedding(query))
         
-        Args:
-            query: User query
-            top_k: Number of chunks to retrieve
+        # Calculate scores (dot product is same as cosine sim for normalized vectors)
+        scores = []
+        for chunk in self.knowledge_base:
+            score = np.dot(query_vec, np.array(chunk['embedding']))
+            scores.append((score, chunk))
+            
+        # Sort by score descending
+        scores.sort(key=lambda x: x[0], reverse=True)
         
-        Returns:
-            Formatted context string
-        """
-        # Generate query embedding
-        query_embedding = self._get_embedding(query)
-        
-        # Search in ChromaDB
-        results = self.collection.query(
-            query_embeddings=[query_embedding],
-            n_results=min(top_k, self.collection.count())
-        )
-        
-        # Format context
-        context_parts = []
-        for i, (doc, metadata) in enumerate(zip(results['documents'][0], results['metadatas'][0]), 1):
-            context_parts.append(f"[Context {i}] {metadata['header']}\n{doc}\n")
-        
-        return "\n".join(context_parts)
-    
-    def generate_response(
-        self, 
-        query: str, 
-        chat_history: List[Dict[str, str]] = None,
-        temperature: float = 0.7
-    ) -> Dict[str, Any]:
-        """
-        Generate a response using RAG.
-        
-        Args:
-            query: User query
-            chat_history: Previous conversation messages
-            temperature: LLM temperature
-        
-        Returns:
-            Dict with response and metadata
-        """
-        # Retrieve relevant context
+        # Format results
+        results = []
+        for i, (score, chunk) in enumerate(scores[:top_k], 1):
+            results.append(f"[Context {i}] {chunk['header']}\n{chunk['content']}\n")
+            
+        return "\n".join(results)
+
+    def generate_response(self, query: str, chat_history: List[Dict] = None) -> Dict:
+        """Generate AI response using RAG."""
         context = self.retrieve_context(query)
-        
-        # Format prompt with context and history
         prompt = format_prompt(context, query, chat_history)
         
-        # Generate response with Groq
         chat_completion = self.groq_client.chat.completions.create(
-            messages=[
-                {"role": "user", "content": prompt}
-            ],
+            messages=[{"role": "user", "content": prompt}],
             model=self.model_name,
-            temperature=temperature,
+            temperature=0.7,
             max_tokens=1024,
         )
         
-        response_text = chat_completion.choices[0].message.content
-        
         return {
-            "response": response_text,
+            "response": chat_completion.choices[0].message.content,
             "context_used": context,
-            "model": self.model_name,
-            "tokens": {
-                "prompt": chat_completion.usage.prompt_tokens,
-                "completion": chat_completion.usage.completion_tokens,
-                "total": chat_completion.usage.total_tokens
-            }
+            "model": self.model_name
         }
-    
+
     def get_greeting(self) -> str:
-        """Get the greeting message."""
         return GREETING_MESSAGE
 
-
-# Singleton instance
-_rag_instance = None
-
-def get_rag_engine() -> ZymnixRAG:
-    """Get or create RAG engine singleton."""
-    global _rag_instance
-    if _rag_instance is None:
-        _rag_instance = ZymnixRAG()
-    return _rag_instance
+# Singleton
+_instance = None
+def get_rag_engine():
+    global _instance
+    if _instance is None:
+        _instance = ZymnixRAG()
+    return _instance
