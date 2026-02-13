@@ -26,7 +26,8 @@ app.add_middleware(
         "http://localhost:3000", 
         "http://localhost:3001",
         "https://*.vercel.app",
-        "https://zymnix.vercel.app"
+        "https://zymnix.vercel.app",
+        "https://zymnix-backend.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -67,12 +68,12 @@ async def startup_event():
     print("🚀 Starting Zymnix AI Consultant API...")
     try:
         rag = get_rag_engine()
-        doc_count = rag.collection.count()
+        doc_count = len(rag.knowledge_base)
         if doc_count == 0:
-            print("⚠️  Vector database is empty. Running automatic ingestion...")
+            print("⚠️  Knowledge base is empty. Running automatic ingestion...")
             from ingest_data import main as run_ingestion
             run_ingestion()
-            doc_count = rag.collection.count()
+            doc_count = len(rag.knowledge_base)
             print(f"✅ Auto-ingestion complete. Loaded {doc_count} chunks.")
         else:
             print(f"✅ RAG engine loaded with {doc_count} knowledge chunks")
@@ -89,7 +90,7 @@ async def health_check():
     """
     try:
         rag = get_rag_engine()
-        doc_count = rag.collection.count()
+        doc_count = len(rag.knowledge_base)
         
         return HealthResponse(
             status="healthy",
@@ -125,7 +126,7 @@ async def chat(request: ChatRequest):
         
         return ChatResponse(
             response=result["response"],
-            tokens_used=result["tokens"]
+            tokens_used=result.get("tokens")  # Robustly handle missing tokens
         )
     
     except Exception as e:
