@@ -1,0 +1,10 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+# chroma_db/ (Enabled for Vercel Serverless deployment)
+*.log
+.venv/
+venv/
