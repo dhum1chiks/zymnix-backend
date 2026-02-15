@@ -29,8 +29,8 @@
         }
     ],
     "functions": {
-        "api/index.py": {
-            "includeFiles": "data/**"
+        "api/**/*.py": {
+            "includeFiles": "../data/**"
         }
     }
 }
