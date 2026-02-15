@@ -1,5 +1,5 @@
 """
-Lightweight RAG Engine for Zymnix AI Consultant.
+Lightweight RAG Engine for Revomate AI Consultant.
 Uses JSON storage and Cosine Similarity to stay within Vercel's 250MB limit.
 """
 
@@ -17,8 +17,8 @@ except (ImportError, ValueError):
 
 load_dotenv()
 
-class ZymnixRAG:
-    """Lightweight RAG system for Zymnix AI Consultant."""
+class RevomateRAG:
+    """Lightweight RAG system for Revomate AI Consultant."""
     
     def __init__(self):
         """Initialize RAG components."""
@@ -144,5 +144,5 @@ _instance = None
 def get_rag_engine():
     global _instance
     if _instance is None:
-        _instance = ZymnixRAG()
+        _instance = RevomateRAG()
     return _instance

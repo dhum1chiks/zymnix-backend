@@ -1,5 +1,5 @@
 """
-FastAPI backend for Zymnix AI Consultant chatbot.
+FastAPI backend for Revomate AI Consultant chatbot.
 """
 
 from fastapi import FastAPI, HTTPException
@@ -14,8 +14,8 @@ import uvicorn
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Zymnix AI Consultant API",
-    description="RAG-based AI consultant for Zymnix business automation",
+    title="Revomate AI Consultant API",
+    description="RAG-based AI consultant for Revomate business automation",
     version="1.0.0"
 )
 
@@ -26,8 +26,8 @@ app.add_middleware(
         "http://localhost:3000", 
         "http://localhost:3001",
         "https://*.vercel.app",
-        "https://zymnix.vercel.app",
-        "https://zymnix-backend.vercel.app"
+        "https://revomate.vercel.app",
+        "https://revomate-backend.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -65,7 +65,7 @@ class HealthResponse(BaseModel):
 @app.on_event("startup")
 async def startup_event():
     """Initialize RAG engine when server starts."""
-    print("🚀 Starting Zymnix AI Consultant API...")
+    print("🚀 Starting Revomate AI Consultant API...")
     try:
         rag = get_rag_engine()
         doc_count = len(rag.knowledge_base)
@@ -94,7 +94,7 @@ async def health_check():
         
         return HealthResponse(
             status="healthy",
-            message="Zymnix AI Consultant is running",
+            message="Revomate AI Consultant is running",
             documents_loaded=doc_count
         )
     except Exception as e:
@@ -104,7 +104,7 @@ async def health_check():
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat(request: ChatRequest):
     """
-    Chat endpoint for conversing with Zymnix AI Consultant.
+    Chat endpoint for conversing with Revomate AI Consultant.
     
     Args:
         request: ChatRequest with user message and optional chat history

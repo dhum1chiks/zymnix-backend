@@ -1,6 +1,6 @@
-# Zymnix AI Consultant Backend
+# Revomate AI Consultant Backend
 
-Professional RAG-based chatbot backend for Zymnix business consulting.
+Professional RAG-based chatbot backend for Revomate business consulting.
 
 ## Features
 
@@ -30,14 +30,14 @@ cp .env.example .env
 
 ### 3. Ingest Training Data
 
-Load the Zymnix knowledge base into the vector database:
+Load the Revomate knowledge base into the vector database:
 
 ```bash
 python ingest_data.py
 ```
 
 This will:
-- Read `zymnix_rag_expanded.txt`
+- Read `revomate_rag_expanded.txt`
 - Split into semantic chunks
 - Generate embeddings using Sentence Transformers
 - Store in ChromaDB for fast retrieval
@@ -63,7 +63,7 @@ POST /api/chat
 Content-Type: application/json
 
 {
-  "message": "How can Zymnix help my dental practice?",
+  "message": "How can Revomate help my dental practice?",
   "chat_history": []
 }
 ```
@@ -106,7 +106,7 @@ curl http://localhost:8000/api/health
 # Chat request
 curl -X POST http://localhost:8000/api/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "What services does Zymnix offer?"}'
+  -d '{"message": "What services does Revomate offer?"}'
 ```
 ## 🧪 Verification & Results
 
@@ -114,7 +114,7 @@ curl -X POST http://localhost:8000/api/chat \
 The `ChatWidget` is now live across the entire site. I have verified the implementation end-to-end locally.
 
 ````carousel
-![Zymnix AI Consultant Local Verification](/home/abdur/.gemini/antigravity/brain/498cf287-93d2-4c54-8267-70b61247b168/chatbot_local_verification_1770999616155.png)
+![Revomate AI Consultant Local Verification](/home/abdur/.gemini/antigravity/brain/498cf287-93d2-4c54-8267-70b61247b168/chatbot_local_verification_1770999616155.png)
 <!-- slide -->
 ![Chatbot Interaction Sequence](/home/abdur/.gemini/antigravity/brain/498cf287-93d2-4c54-8267-70b61247b168/chatbot_ui_screenshot_1770999506404.webp)
 ````
@@ -124,7 +124,7 @@ I verified the API response using a curl test:
 ```bash
 curl -X POST http://localhost:8000/api/chat \
   -H "Content-Type: application/json" \
-  -d '{"message": "How can Zymnix help my dental practice?"}'
+  -d '{"message": "How can Revomate help my dental practice?"}'
 ```
 **Result**: The AI correctly identified as a professional consultant, cited specialized knowledge chunks, and provided industry-specific ROI metrics.
 

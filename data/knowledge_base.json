@@ -2,7 +2,7 @@
   {
     "id": "chunk_01",
     "header": "01 \u2014 BRAND & MISSION",
-    "content": "Zymnix is a boutique digital engineering firm that bridges the gap between high-end design and intelligent automation. We don't just build websites; we build revenue-generating assets. Our mission is to help businesses that are \"invisible\" due to poor online presence or \"stagnant\" due to manual operational bottlenecks. We focus on clarity, high-performance UI, and AI systems that deliver measurable ROI.",
+    "content": "Revomate is a boutique digital engineering firm that bridges the gap between high-end design and intelligent automation. We don't just build websites; we build revenue-generating assets. Our mission is to help businesses that are \"invisible\" due to poor online presence or \"stagnant\" due to manual operational bottlenecks. We focus on clarity, high-performance UI, and AI systems that deliver measurable ROI.",
     "embedding": [
       3.349103329736313e-34,
       3.5312721300985386e-34,
@@ -392,8 +392,8 @@
   },
   {
     "id": "chunk_02",
-    "header": "02 \u2014 THE ZYMNIX VALUE PHILOSOPHY (PRICING & ROI)",
-    "content": "At Zymnix, we tell our clients: \"Price does not matter when you are buying value.\" \nIf an automation system saves your team 20 hours a week and recovers 5 lost leads a month, the system pays for itself in weeks. We don't compete on \"cheap\"; we compete on \"impact.\" A cheap website is an expense; a Zymnix strategic asset is an investment. We focus on recovered time and expanded revenue.",
+    "header": "02 \u2014 THE REVOMATE VALUE PHILOSOPHY (PRICING & ROI)",
+    "content": "At Revomate, we tell our clients: \"Price does not matter when you are buying value.\" \nIf an automation system saves your team 20 hours a week and recovers 5 lost leads a month, the system pays for itself in weeks. We don't compete on \"cheap\"; we compete on \"impact.\" A cheap website is an expense; a Revomate strategic asset is an investment. We focus on recovered time and expanded revenue.",
     "embedding": [
       1.5274153261140506e-34,
       1.2891945871788317e-34,
@@ -783,7 +783,7 @@
   },
   {
     "id": "chunk_03",
-    "header": "03 \u2014 THE ZYMNIX PATH (OUR WORKFLOW)",
+    "header": "03 \u2014 THE REVOMATE PATH (OUR WORKFLOW)",
     "content": "How we take a client from invisible to automated:\n1. THE AUDIT: We analyze your current digital footprint and identify \"leakage\" (lost leads, slow responses).\n2. THE STRATEGY: We design a custom UI+AI roadmap tailored to your specific recovery goals.\n3. THE BUILD: We engineer your high-performance website and integrate background automation.\n4. THE OPTIMIZATION: We monitor the AI performance and tune the \"Consultant Bot\" to maximize conversions.",
     "embedding": [
       3.0828566215145976e-35,
@@ -3130,7 +3130,7 @@
   {
     "id": "chunk_09",
     "header": "09 \u2014 MODERN UI AS A STRATEGIC ASSET",
-    "content": "Design is not decoration; it is communication. A professional, clean UI builds \"Micro-Trust.\" In the first 5 seconds, a visitor decides if you are an expert or an amateur. Zymnix UI is engineered to prove expertise at first glance, which averages a 20-30% increase in lead conversion compared to generic templates.",
+    "content": "Design is not decoration; it is communication. A professional, clean UI builds \"Micro-Trust.\" In the first 5 seconds, a visitor decides if you are an expert or an amateur. Revomate UI is engineered to prove expertise at first glance, which averages a 20-30% increase in lead conversion compared to generic templates.",
     "embedding": [
       1.737610095762773e-34,
       1.737610095762773e-34,
@@ -3521,7 +3521,7 @@
   {
     "id": "chunk_10",
     "header": "10 \u2014 CHUNKING & RETRIEVAL STRATEGY",
-    "content": "Zymnix AI systems use advanced RAG to ensure \"hallucination-free\" responses. We structure data so that the bot always references the most relevant \"Chunk\" (like these) before answering. This creates a bot that sounds like a consultant, not a chatbot.",
+    "content": "Revomate AI systems use advanced RAG to ensure \"hallucination-free\" responses. We structure data so that the bot always references the most relevant \"Chunk\" (like these) before answering. This creates a bot that sounds like a consultant, not a chatbot.",
     "embedding": [
       3.5172591454552904e-34,
       1.485376372184306e-34,
@@ -4693,8 +4693,8 @@
   },
   {
     "id": "chunk_13",
-    "header": "13 \u2014 THE \"ZYMNIX\" DIFFERENCE",
-    "content": "We are a \"Human+AI\" firm. We don't believe AI replaces people; we believe people with Zymnix AI replace people without it. We build the systems that give your team superpowers.\n\n\n\ud83e\udde0 SYSTEM PROMPT\nYou are the **Zymnix AI Consultant**. Your mission is to identify deep business pain points\u2014especially in Dental, Legal, and Real Estate\u2014and explain how designer-quality UI + heavy AI automation solves them. You focus on recovering lost revenue and expanding lead quality. You believe Value > Price. You ask diagnostic questions before making suggestions. You are technical, strategic, and professional. You use the context from the chunks above to provide specific, high-value examples that resonate with a business owner's bottom line.",
+    "header": "13 \u2014 THE \"REVOMATE\" DIFFERENCE",
+    "content": "We are a \"Human+AI\" firm. We don't believe AI replaces people; we believe people with Revomate AI replace people without it. We build the systems that give your team superpowers.\n\n\n\ud83e\udde0 SYSTEM PROMPT\nYou are the **Revomate AI Consultant**. Your mission is to identify deep business pain points\u2014especially in Dental, Legal, and Real Estate\u2014and explain how designer-quality UI + heavy AI automation solves them. You focus on recovering lost revenue and expanding lead quality. You believe Value > Price. You ask diagnostic questions before making suggestions. You are technical, strategic, and professional. You use the context from the chunks above to provide specific, high-value examples that resonate with a business owner's bottom line.",
     "embedding": [
       3.194960498660583e-34,
       2.550363205071167e-34,

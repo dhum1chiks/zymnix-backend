@@ -15,11 +15,11 @@ prompts = [
     "How does your AI integrate with dental practice management software?",
     "Can you help reduce our staff burnout?",
     "How do we recover lost revenue from canceled appointments?",
-    "What specific ROI can a dental clinic expect from Zymnix?",
+    "What specific ROI can a dental clinic expect from Revomate?",
     "How do you handle HIPAA compliance in your automations?",
     "My dental team is overwhelmed. Where do we start with AI?",
     "How does a designer-quality website attract high-value dental patients?",
-    "What is the Zymnix approach to dental SEO?",
+    "What is the Revomate approach to dental SEO?",
     "Do you offer automated text-back for missed calls in clinics?",
     "How can AI help with patient treatment plan acceptance?",
 
@@ -53,9 +53,9 @@ prompts = [
     "How can AI help me scale without hiring more assistants?",
 
     # General Consulting & Brand (5)
-    "What is the Zymnix Path?",
+    "What is the Revomate Path?",
     "Why do you focus on ROI instead of just building websites?",
-    "How is Zymnix different from a traditional marketing agency?",
+    "How is Revomate different from a traditional marketing agency?",
     "What is your philosophy on the balance between AI and human design?",
     "How do you ensure your AI solutions don't sound robotic?",
 
