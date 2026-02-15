@@ -27,10 +27,5 @@
                 }
             ]
         }
-    ],
-    "functions": {
-        "api/**/*.py": {
-            "includeFiles": "../data/**"
-        }
-    }
+    ]
 }

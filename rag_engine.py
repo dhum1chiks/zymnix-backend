@@ -26,8 +26,8 @@ class RevomateRAG:
         self.model_name = os.getenv("MODEL_NAME", "llama-3.1-8b-instant")
         
         # Determine paths
-        # 1. Primary: Where the code expects it (project/data)
-        base_kb_path = os.getenv("KNOWLEDGE_BASE_PATH", "./data/knowledge_base.json")
+        # 1. Primary: Where the code expects it (project/api/data)
+        base_kb_path = os.getenv("KNOWLEDGE_BASE_PATH", "./api/data/knowledge_base.json")
         if not os.path.isabs(base_kb_path):
             base_dir = os.path.dirname(os.path.abspath(__file__))
             base_kb_path = os.path.normpath(os.path.join(base_dir, base_kb_path))

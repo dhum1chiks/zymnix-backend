@@ -16,7 +16,7 @@ def main():
     if not os.path.exists(data_path):
         # Try finding it relative to this file
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        data_path = os.path.join(base_dir, "data", "revomate_rag_expanded.txt")
+        data_path = os.path.join(base_dir, "api", "data", "revomate_rag_expanded.txt")
 
     if not os.path.exists(data_path):
         print(f"❌ Error: Data file not found at {data_path}")
