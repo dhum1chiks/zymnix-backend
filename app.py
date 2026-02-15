@@ -27,7 +27,9 @@ app.add_middleware(
         "http://localhost:3001",
         "https://*.vercel.app",
         "https://revomate.vercel.app",
-        "https://revomate-backend.vercel.app"
+        "https://revomate-backend.vercel.app",
+        "https://zymnix.vercel.app",
+        "https://www.zymnix.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
