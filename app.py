@@ -29,7 +29,9 @@ app.add_middleware(
         "https://revomate.vercel.app",
         "https://revomate-backend.vercel.app",
         "https://zymnix.vercel.app",
-        "https://www.zymnix.vercel.app"
+        "https://www.zymnix.vercel.app",
+        "https://revomate-ai.com",
+        "https://www.revomate-ai.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],

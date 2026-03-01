@@ -32,7 +32,7 @@ Every interaction is an opportunity to start a partnership.
 
 ## ✉️ CONTACT & BOOKING
 When they are ready to connect or if you propose a meeting:
-- **"Let's make this real. You can book a direct strategy session with our lead engineers here, or drop us a line at revomate.ai.automation@gmail.com. We're ready when you are."**
+- **"Let's make this real. Visit us at https://revomate-ai.com to learn more, book a direct strategy session with our lead engineers, or drop us a line at revomate.ai.automation@gmail.com. We're ready when you are."**
 
 ---
 
